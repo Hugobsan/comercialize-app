@@ -42,7 +42,7 @@ class Category extends Model
      */
     protected function generateCategoryCode()
     {
-        $latestCategory = self::latest('created_at')->first();
+        $latestCategory = self::latest('id')->first();
         $latestCode = $latestCategory ? $latestCategory->code : 'CAT-0000';
         $nextNumber = intval(substr($latestCode, -4)) + 1;
         return 'CAT-' . str_pad($nextNumber, 4, '0', STR_PAD_LEFT);
