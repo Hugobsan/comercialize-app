@@ -9,10 +9,14 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+    public function up()
     {
         Schema::create('sales', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('seller_id')->constrained('users');
+            $table->foreignId('customer_id')->constrained('users');
+            $table->decimal('total_amount', 10, 2);
+            $table->integer('total_quantity');
             $table->timestamps();
         });
     }
