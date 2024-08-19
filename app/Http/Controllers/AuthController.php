@@ -3,26 +3,40 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
     public function login(Request $request)
     {
-        $credentials = $request->only('email', 'password');
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+        ]);
 
-        if (auth()->attempt($credentials)) {
-            $token = auth()->user()->createToken('authToken')->accessToken;
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
 
-            return response()->json(['token' => $token], 200);
+            if (Auth::attempt($credentials)) {
+                $request->session()->regenerate();
+
+                return redirect()->intended('products.index');
+            }
         }
 
-        return response()->json(['error' => 'Unauthorized'], 401);
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.',
+        ])->onlyInput('email');
     }
 
     public function logout(Request $request)
     {
-        $request->user()->token()->revoke();
+        Auth::logout();
 
-        return response()->json(['message' => 'Successfully logged out'], 200);
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return redirect('/');
     }
 }
