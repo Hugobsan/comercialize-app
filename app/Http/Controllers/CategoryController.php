@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
+use Illuminate\Support\Facades\Auth;
 
 class CategoryController extends Controller
 {
@@ -13,7 +14,12 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        //Verificando se o usuário tem autorização para ver categorias
+        if (Auth::user()->can('view', Category::class)) {
+            $categories = Category::all();
+
+            return view('categories.index', compact('categories'));
+        }
     }
 
     /**

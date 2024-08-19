@@ -38,6 +38,7 @@ body {
     border-radius: 32px;
     backdrop-filter: blur(5px);
     color: #fff;
+    text-shadow: 0 0 10px #000;
 }
 
 .brand-filler i {
@@ -61,6 +62,7 @@ body {
 .brand-login .brand {
     /*Substituindo color por linear gradient na cor do texto*/
     background: linear-gradient(90deg, #531607 0%, #8c3a25 100%);
+    background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     font-size: 40px;

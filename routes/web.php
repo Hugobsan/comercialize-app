@@ -10,7 +10,7 @@ Route::get('/login', function () {
     return view('login');
 })->name('login');
 
-Route::post('/login', 'AuthController@login');
+Route::post('/login', 'AuthController@login')->name('login');
 
 Route::middleware('auth')->group(function () {
     Route::get('/logout', 'AuthController@logout');
