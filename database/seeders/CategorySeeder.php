@@ -12,6 +12,21 @@ class CategorySeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        $categories = [
+            'Electronics',
+            'Clothing',
+            'Books',
+            'Toys',
+            'Furniture',
+            'Food',
+            'Tools',
+            'Sporting Goods',
+            'Automotive',
+            'Beauty',
+        ];
+
+        foreach ($categories as $category) {
+            \App\Models\Category::factory()->create(['name' => $category]);
+        }
     }
 }
