@@ -1,0 +1,156 @@
+body {
+    background-color: #fff;
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+}
+
+.border-red {
+    border: 1px solid red;
+}
+
+.content{
+    height: 100vh;
+    width: 100%;
+}
+
+.filler-login {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    border-top-right-radius: 65px;
+    border-bottom-right-radius: 65px;
+}
+
+/*Removendo border radius caso a tela seja menor que md*/
+@media (max-width: 768px) {
+    .filler-login {
+        border-top-right-radius: 0px;
+        border-bottom-right-radius: 0px;
+    }
+}
+
+.brand-filler {
+    font-weight: 500;
+    text-align: center;
+    font-size: 40px;
+    padding: 32px;
+    border-radius: 32px;
+    backdrop-filter: blur(5px);
+    color: #fff;
+}
+
+.brand-filler i {
+    font-size: 50px;
+    margin-right: 10px;
+}
+
+.data-login {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.brand-login {
+    text-align: center;
+    color: #531607;
+    margin: 50px auto;
+}
+
+.brand-login .brand {
+    /*Substituindo color por linear gradient na cor do texto*/
+    background: linear-gradient(90deg, #531607 0%, #8c3a25 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 40px;
+}
+
+.brand-login i {
+    font-size: 50px;
+    margin: 0 10px;
+}
+
+.form-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    align-items: left;
+    padding: 0px 50px;
+    width: 100%;
+}
+
+.form-content h1 {
+    font-size: 32px;
+    color: #000;
+}
+
+.form-content form input:focus {
+    border-color: #531607;
+    box-shadow: 0 0 0 0.25rem #53160740;
+}
+
+.form-content form input[type="checkbox"] {
+    border: 2px solid #531607;
+    box-shadow: 0 0 0 0.25rem #53160740;
+}
+
+.form-content form input[type="checkbox"]:checked {
+    border-color: #531607;
+    box-shadow: 0 0 0 0.25rem #53160740;
+    background-color: #531607;
+
+}
+
+.form-content .forgot-password {
+    font-weight: 600;
+    font-size: 14px;
+    color: #531607;
+    text-decoration: none;
+    margin: 10px 0px;
+}
+
+.form-content .forgot-password:hover {
+    text-decoration: underline;
+}
+
+.form-content hr {
+    border: 1px solid #531607;
+    margin: 20px 0px;
+}
+
+.form-content button {
+    font-weight: 600;
+    width: 100%;
+    font-size: 16px;
+    color: #fff;
+    background-color: #531607;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    margin: 0px 0px;
+    cursor: pointer;
+}
+
+.form-content button:hover {
+    background-color: #8c3a25;
+}
+
+.password-container {
+    position: relative;
+}
+
+.password-container input[type="password"],
+.password-container input[type="text"] {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.fa-eye,
+.fa-eye-slash {
+    position: absolute;
+    top: 28%;
+    right: 4%;
+    cursor: pointer;
+    color: lightgray;
+}

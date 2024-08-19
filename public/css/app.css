@@ -1,0 +1,221 @@
+body{
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    background-color: #F0F0F0;
+}
+
+.navbar-brand .fa-book{
+    color: #642616;
+    font-size: 1.5em;
+    padding-right: 30px;
+    margin-right: 10px;
+    border-right: 1px solid #cbcbcb;
+}
+
+.navbar .active{
+    border: 1px solid #642616;
+    border-radius: 10px;
+}
+
+.navbar .active:hover{
+    background-color: #642616;
+    color: #FFF !important;
+}
+
+.user-credentials{
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    justify-content: center;
+    margin: 0px 10px;
+}
+
+.user-info{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 5px;
+}
+
+.user-info:hover{
+    cursor: pointer;
+    background-color: #EEE;
+    border-radius: 5px;
+
+}
+
+.user-info .username{
+    font-weight: 500;
+    justify-self: flex-end;
+}
+
+.user-credentials{
+    width: 200px;
+    height: max-content;
+}
+
+.user-info .email{
+    font-size: 0.8em;
+    justify-self: flex-end;
+}
+
+.user-icon{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    font-weight: 500;
+    border: 2px solid #CCC;
+    border-radius: 50%;
+    width: 32px;
+    min-width: 32px;
+    height: 32px;
+}
+
+.end-menu{
+    float: right;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    margin: 0px 10px;
+}
+
+.navbar ul{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.navbar ul li{
+    width: 100%;
+    text-align: center;
+}
+
+.navbar .end-menu ul{
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.btn-exit{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin: 0px 10px;
+}
+
+.topo{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 30px 10px 30px;
+}
+
+.topo h1{
+    font-weight: 500;
+    font-size: 32px;
+}
+
+.topo button{
+    width: max-content;
+}
+.topo button i{
+    margin-right: 10px;
+}
+
+.btn-new{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    background: #642616;
+    color: #FFF;
+    border: 0px;
+    border-radius: 10px;
+    padding: 5px 10px;
+    font-weight: 500;
+    width: 150px;
+}
+
+.btn-new:hover{
+    cursor: pointer;
+    background: #FFF;
+    color: #642616;
+    border: 1px solid #642616;
+}
+
+.btn-new .fa-plus{
+    justify-self: center;
+    background: #FFF;
+    color: #642616;
+    border-radius: 50%;
+    padding: 5px 6px;
+}
+
+.tabela{
+    background: #FFF;
+    border-radius: 15px;
+    padding: 10px;
+    margin: 20px 10px;
+}
+
+.tabela td a, .btn-search{
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    color: #642616;
+    background: #cbcbcb;
+}
+
+.btn-search{
+    width: 50px;
+}
+
+.emprestimos{
+    font-size: 14px;
+}
+
+.emprestimos a{
+    color: #642616;
+    text-decoration: none;
+}
+
+.emprestimos a:hover{
+    text-decoration: underline;
+}
+
+.box-historico{
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+label{
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+.password-container {
+    position: relative;
+}
+
+.password-container input[type="password"],
+.password-container input[type="text"] {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.fa-eye,
+.fa-eye-slash {
+    position: absolute;
+    top: 28%;
+    right: 7%;
+    cursor: pointer;
+    color: lightgray;
+}
