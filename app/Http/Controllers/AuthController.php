@@ -24,9 +24,8 @@ class AuthController extends Controller
             }
         }
 
-        return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
-        ])->onlyInput('email');
+        toastr()->error('Usuário e/ou senha inválidos');
+        return back()->onlyInput('email');
     }
 
     public function logout(Request $request)
