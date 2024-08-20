@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Sale;
 use App\Http\Requests\StoreSaleRequest;
 use App\Http\Requests\UpdateSaleRequest;
+use App\Models\Product;
 
 class SaleController extends Controller
 {
@@ -62,5 +63,29 @@ class SaleController extends Controller
     public function destroy(Sale $sale)
     {
         //
+    }
+
+    public function addToCart(Product $product)
+    {
+        //Adicionando o produto ao carrinho na sessão
+        $cart = session('cart', []);
+
+        //Verifica se o produto já está no carrinho
+        $productIndex = array_search($product->id, array_column($cart, 'product_id'));
+
+        if($productIndex === false){
+            $cart[] = [
+                'product_id' => $product->id,
+                'quantity' => 1,
+                'price' => $product->price,
+            ];
+        } else {
+            $cart[$productIndex]['quantity']++;
+        }
+
+        session(['cart' => $cart]);
+
+        toastr()->success('Produto adicionado ao carrinho');
+        return redirect()->back();
     }
 }

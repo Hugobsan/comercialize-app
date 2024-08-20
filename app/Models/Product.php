@@ -33,12 +33,14 @@ class Product extends Model
 
     public function setPriceAttribute($value)
     {
-        $this->attributes['price'] = str_replace(',', '', $value);
+        //Remove os pontos e substitui a vírgula por ponto
+        $this->attributes['price'] = str_replace(',', '.', str_replace('.', '', $value));
     }
 
     public function getPriceAttribute($value)
     {
-        return number_format($value, 2);
+        //Formata o valor do preço para o padrão brasileiro
+        return number_format($value, 2, ',', '.');
     }
 
     public function getPhotoAttribute($value)

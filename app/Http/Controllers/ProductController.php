@@ -19,7 +19,7 @@ class ProductController extends Controller
             return redirect()->route('index');
         }
 
-        $products = Product::paginate(10);
+        $products = Product::paginate(8);
 
         return view('products.index', compact('products'));
     }
@@ -69,6 +69,14 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        if (!auth()->user()->can('delete', $product)) {
+            toastr()->error('Você não tem permissão para deletar produtos');
+            return back();
+        }
+
+        $product->delete();
+
+        toastr()->success('Produto deletado com sucesso');
+        return redirect()->route('products.index');
     }
 }

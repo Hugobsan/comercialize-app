@@ -20,8 +20,10 @@ Route::post('/login', [AuthController::class, 'login'])->name('login');
 
 Route::middleware('auth')->group(function () {
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::get('/add-to-cart/{product}', [SaleController::class, 'addToCart'])->name('sales.add-to-cart');
     Route::resource('sales', SaleController::class);
     Route::resource('products', ProductController::class);
     Route::resource('categories', CategoryController::class);
     Route::resource('users', UserController::class);
+    
 });
