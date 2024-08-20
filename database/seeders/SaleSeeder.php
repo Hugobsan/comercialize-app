@@ -16,31 +16,30 @@ class SaleSeeder extends Seeder
         $customers = \App\Models\User::where('role', 'customer')->get();
         $products = \App\Models\Product::all();
 
-        $sellers->each(function ($seller) use ($customers, $products) {
-            $customers->each(function ($customer) use ($seller, $products) {
-                $totalQuantity = 0;
-                $totalAmount = 0;
+        $sales = \App\Models\Sale::factory(50)->make()->each(function ($sale) use ($sellers, $customers, $products) {
+            $sale->seller_id = $sellers->random()->id;
+            $sale->customer_id = $customers->random()->id;
+            $sale->save();
 
-                $products->random(5)->each(function ($product) use (&$totalQuantity, &$totalAmount) {
-                    $quantity = rand(1, 5);
-                    $price = $product->price;
-
-                    $totalQuantity += $quantity;
-                    $totalAmount += $quantity * $price;
-
-                    \App\Models\Sale::factory()->create([
-                        'seller_id' => $seller->id,
-                        'customer_id' => $customer->id,
-                        'total_quantity' => $totalQuantity,
-                        'total_amount' => $totalAmount,
-                    ])->each(function ($sale) use ($product, $quantity, $price) {
-                        $sale->products()->attach($product->id, [
-                            'quantity' => $quantity,
-                            'price' => $price,
-                        ]);
-                    });
-                });
+            $saleProducts = $products->random(rand(1, 10))->map(function ($product) {
+                return [
+                    'product_id' => $product->id,
+                    'quantity' => rand(1, 10),
+                    'price' => $product->unformatted_price,
+                ];
             });
+
+            $totalAmount = $saleProducts->sum(function ($saleProduct) {
+                return (int) $saleProduct['quantity'] * (float) $saleProduct['price'];
+            });
+
+            $totalQuantity = $saleProducts->sum('quantity');
+
+            $sale->products()->attach($saleProducts);
+            $sale->update([
+                'total_amount' => $totalAmount,
+                'total_quantity' => $totalQuantity,
+            ]);
         });
     }
 }

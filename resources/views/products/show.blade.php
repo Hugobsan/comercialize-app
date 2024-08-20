@@ -7,16 +7,18 @@
     <section class="container my-3 p-3 bg-white rounded shadow">
         <div class="row">
             <div class="col-12 col-md-4">
-                <img src="{{ $product->photo }}" class="img-fluid" alt="{{ $product->name }}">
+                <img src="{{ $product->photo }}" class="img-fluid rounded" alt="{{ $product->name }}">
             </div>
             <div class="col-12 col-md-5 d-flex flex-column justify-content-between">
                 <div>
                     <h1>{{ $product->name }}</h1>
 
-                    <div style="color: {{ $product->category->color ?? '#33f' }}">
-                        <i class="{{ $product->category->icon }}"></i>
-                        {{ $product->category->name }}
-                    </div>
+                    @isset($product->category)
+                        <div style="color: {{ $product->category->color ?? '#33f' }}">
+                            <i class="{{ $product->category->icon }}"></i>
+                            {{ $product->category->name }}
+                        </div>
+                    @endisset
                     <p>R$ {{ $product->price }}</p>
                     <p class="{{ $product->quantity <= 5 ? 'text-danger' : '' }}">Estoque: {{ $product->quantity }}</p>
                 </div>
@@ -56,12 +58,23 @@
             </div>
         </div>
     </section>
+    <section class="container my-3 p-3 bg-white rounded shadow">
+        <div class="d-flex flex-row justify-content-between my-2">
+            <h2>Vendas</h2>
+            <button class="btn btn-danger text-white p-2">
+                <i class="fas fa-file-pdf"></i> Exportar relatório
+            </button>
+        </div>
+        @include('sales.components.table', ['sales' => $product->sales])
+    </section>
 
 @endsection
 
 @push('scripts')
     <script>
         @if ($errors->any())
+            let product = @json($product);
+            editProduct(product);
             $('#create_product').modal('show');
         @endif
 

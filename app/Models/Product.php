@@ -30,12 +30,11 @@ class Product extends Model
 
     public function sales()
     {
-        return $this->belongsToMany(Sale::class)->withPivot('quantity', 'price');
+        return $this->belongsToMany(Sale::class, 'sale_product')->withPivot('quantity', 'price');
     }
 
     public function getPriceAttribute($value)
     {
-        //Formata o valor do preço para o padrão brasileiro
         return number_format($value, 2, ',', '.');
     }
 

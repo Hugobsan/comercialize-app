@@ -33,12 +33,12 @@ class SaleFactory extends Factory
             return [
                 'product_id' => $product->id,
                 'quantity' => $this->faker->numberBetween(1, 10),
-                'price' => $product->price,
+                'price' => $product->unformatted_price,
             ];
         });
 
         $totalAmount = $saleProducts->sum(function ($saleProduct) {
-            return $saleProduct['quantity'] * $saleProduct['price'];
+            return (int) $saleProduct['quantity'] * (float)$saleProduct['price'];
         });
 
         $totalQuantity = $saleProducts->sum('quantity');

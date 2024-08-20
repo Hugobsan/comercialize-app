@@ -28,9 +28,9 @@ class ProductController extends Controller
             $products = Product::where('name', 'like', '%' . $search . '%')
                 ->orWhereHas('category', function ($query) use ($search) {
                     $query->where('name', 'like', '%' . $search . '%');
-                })->paginate(8)->appends(['search' => $search]);
+                })->orderBy('name')->paginate(8)->appends(['search' => $search]);
         } else {
-            $products = Product::paginate(8);
+            $products = Product::orderBy('name')->paginate(8);
         }
 
         $categories = Category::all();

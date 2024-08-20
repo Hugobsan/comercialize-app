@@ -1,11 +1,13 @@
-<div class="card my-3">
-    <img src="{{ $product->photo }}" class="card-img-top" alt="{{ $product->name }}">
+<div class="card my-3 shadow">
+    <img src="{{ $product->photo }}" class="card-img-top" alt="{{ $product->name }}" style="max-height: 36vh">
     <div class="card-body">
         <h5 class="card-title text-truncate">{{ $product->name }}</h5>
-        <div style="color: {{ $product->category->color ?? '#33f' }}">
-            <i class="{{ $product->category->icon }}"></i>
-            {{ $product->category->name }}
-        </div>
+        @isset($product->category)
+            <div style="color: {{ $product->category->color ?? '#33f' }}">
+                <i class="{{ $product->category->icon }}"></i>
+                {{ $product->category->name }}
+            </div>
+        @endisset
         <p class="card-text">R$ {{ $product->price }}</p>
         <p class="card-text {{ $product->quantity <= 5 ? 'text-danger' : '' }}">Estoque: {{ $product->quantity }}</p>
         <div class="d-flex flex-row justify-content-between">

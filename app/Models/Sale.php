@@ -19,6 +19,8 @@ class Sale extends Model
         'updated_at' => 'datetime',
     ];
 
+    protected $appends = ['unformatted_total_amount'];
+
     public function seller()
     {
         return $this->belongsTo(User::class, 'seller_id');
@@ -31,16 +33,16 @@ class Sale extends Model
 
     public function products()
     {
-        return $this->belongsToMany(Product::class)->withPivot('quantity', 'price');
+        return $this->belongsToMany(Product::class, 'sale_product')->withPivot('quantity', 'price');
     }
 
     public function getTotalAmountAttribute($value)
     {
-        return number_format($value, 2);
+        return number_format($value, 2, ',', '.');
     }
 
-    public function setTotalAmountAttribute($value)
+    public function getUnformattedTotalAmountAttribute()
     {
-        $this->attributes['total_amount'] = str_replace(',', '', $value);
+        return $this->attributes['total_amount'];
     }
 }
