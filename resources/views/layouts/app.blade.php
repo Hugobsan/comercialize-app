@@ -46,7 +46,7 @@
             $('#telefone').mask('(00) 00000-0000');
         });
     </script>
-    @yield('script')
+    @stack('scripts')
 
 </body>
 

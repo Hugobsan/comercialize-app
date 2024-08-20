@@ -64,7 +64,14 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        //
+        if (!auth()->user()->can('view', $product)) {
+            toastr()->error('Você não tem permissão para visualizar produtos');
+            return redirect()->route('index');
+        }
+
+        $categories = Category::all();
+
+        return view('products.show', compact('product','categories'));
     }
 
     /**
@@ -72,7 +79,7 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        //
+        
     }
 
     /**
@@ -80,7 +87,12 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, Product $product)
     {
-        //
+        $request->validated();
+
+        $product->update($request->all());
+
+        toastr()->success('Produto atualizado com sucesso');
+        return back();
     }
 
     /**
@@ -90,7 +102,7 @@ class ProductController extends Controller
     {
         if (!auth()->user()->can('delete', $product)) {
             toastr()->error('Você não tem permissão para deletar produtos');
-            return back();
+            return redirect()->route('index');
         }
 
         $product->delete();

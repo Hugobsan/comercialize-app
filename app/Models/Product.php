@@ -21,6 +21,8 @@ class Product extends Model
         'deleted_at' => 'datetime',
     ];
 
+    protected $appends = ['unformatted_price'];
+
     public function category()
     {
         return $this->belongsTo(Category::class);
@@ -31,16 +33,15 @@ class Product extends Model
         return $this->belongsToMany(Sale::class)->withPivot('quantity', 'price');
     }
 
-    public function setPriceAttribute($value)
-    {
-        //Remove os pontos e substitui a vírgula por ponto
-        $this->attributes['price'] = str_replace(',', '.', str_replace('.', '', $value));
-    }
-
     public function getPriceAttribute($value)
     {
         //Formata o valor do preço para o padrão brasileiro
         return number_format($value, 2, ',', '.');
+    }
+
+    public function getUnformattedPriceAttribute()
+    {
+        return $this->attributes['price'];
     }
 
     public function getPhotoAttribute($value)

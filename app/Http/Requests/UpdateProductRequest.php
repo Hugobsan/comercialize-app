@@ -11,7 +11,9 @@ class UpdateProductRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        if ($this->user()->can('update', $this->product)) {
+            return true;
+        }
     }
 
     /**
@@ -22,7 +24,27 @@ class UpdateProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required|string|max:255',
+            'photo' => 'nullable|image',
+            'price' => 'required|numeric|min:0',
+            'category_id' => 'nullable|exists:categories,id',
+            'quantity' => 'required|integer|min:0',
+        ];
+    }
+
+    /**
+     * Converte os nomes dos inputs para português.
+     * 
+     * @return array<string, string>
+     */
+    public function attributes(): array
+    {
+        return [
+            'name' => 'nome',
+            'photo' => 'foto',
+            'price' => 'preço',
+            'category_id' => 'categoria',
+            'quantity' => 'quantidade',
         ];
     }
 }

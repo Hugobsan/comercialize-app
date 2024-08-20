@@ -53,3 +53,11 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+<script>
+    @if ($errors->any())
+        $('#create_product').modal('show');
+    @endif
+</script>
+@endpush

@@ -7,7 +7,7 @@
             {{ $product->category->name }}
         </div>
         <p class="card-text">R$ {{ $product->price }}</p>
-        <p class="card-text {{$product->quantity <= 5 ? "text-danger": ""}}">Estoque: {{ $product->quantity }}</p>
+        <p class="card-text {{ $product->quantity <= 5 ? 'text-danger' : '' }}">Estoque: {{ $product->quantity }}</p>
         <div class="d-flex flex-row justify-content-between">
             <div>
                 <a href="{{ route('sales.add-to-cart', $product->id) }}" class="btn btn-success" data-bs-toggle="tooltip" title="Adicionar ao carrinho de compras">
@@ -21,7 +21,7 @@
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                     <li><a class="dropdown-item" href="{{ route('products.show', $product->id) }}">Ver</a></li>
                     @can('update', $product)
-                        <li><a class="dropdown-item" href="{{ route('products.edit', $product->id) }}">Editar</a></li>
+                        <li><button class="dropdown-item product-edit" data-id="{{ $product->id }}">Editar</button></li>
                     @endcan
                     @can('delete', $product)
                         <li>
@@ -40,3 +40,18 @@
         </div>
     </div>
 </div>
+
+@push('scripts')
+    <script>
+        $(document).ready(function() {
+            const products = @json($products).data;
+            $('.product-edit').click(function() {
+                let id = $(this).data('id');
+                let product = products.find(product => product.id == id);
+                editProduct(product);
+                $('#createProductLabel').text('Editar Produto');
+                $('#create_product').modal('show');
+            });
+        });
+    </script>
+@endpush
