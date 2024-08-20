@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+use App\Models\Category;
 
 class ProductController extends Controller
 {
@@ -19,9 +20,22 @@ class ProductController extends Controller
             return redirect()->route('index');
         }
 
-        $products = Product::paginate(8);
+        // Verifica se tem dados de pesquisa
+        $search = request()->input('search');
 
-        return view('products.index', compact('products'));
+        if ($search) {
+            //Pesquisa por nome ou categoria
+            $products = Product::where('name', 'like', '%' . $search . '%')
+                ->orWhereHas('category', function ($query) use ($search) {
+                    $query->where('name', 'like', '%' . $search . '%');
+                })->paginate(8)->appends(['search' => $search]);
+        } else {
+            $products = Product::paginate(8);
+        }
+
+        $categories = Category::all();
+
+        return view('products.index', compact('products', 'categories', 'search'));
     }
 
     /**
