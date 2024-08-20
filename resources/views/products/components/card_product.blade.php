@@ -7,6 +7,7 @@
             {{ $product->category->name }}
         </div>
         <p class="card-text">R$ {{ $product->price }}</p>
+        <p class="card-text {{$product->quantity <= 5 ? "text-danger": ""}}">Estoque: {{ $product->quantity }}</p>
         <div class="d-flex flex-row justify-content-between">
             <div>
                 <a href="{{ route('sales.add-to-cart', $product->id) }}" class="btn btn-success" data-bs-toggle="tooltip" title="Adicionar ao carrinho de compras">

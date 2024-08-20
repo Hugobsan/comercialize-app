@@ -51,7 +51,12 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-        //
+        $request->validated();
+
+        Product::create($request->all());
+
+        toastr()->success('Produto cadastrado com sucesso');
+        return redirect()->route('products.index');
     }
 
     /**

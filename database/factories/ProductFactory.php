@@ -20,7 +20,7 @@ class ProductFactory extends Factory
     {
         return [
             'name' => $this->faker->sentence(2),
-            'photo' => $this->faker->imageUrl(),
+            'photo' => $this->faker->imageUrl(640, 480, 'Faker', false, 'Produto', true),
             'price' => $this->faker->randomFloat(2, 1, 1000),
             'category_id' => Category::factory()->create()->id,
             'quantity' => $this->faker->numberBetween(1, 100),
