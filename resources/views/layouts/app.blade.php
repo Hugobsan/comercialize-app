@@ -56,6 +56,11 @@
                 url: 'https://cdn.datatables.net/plug-ins/1.11.3/i18n/pt_br.json'
             }
         });
+
+        //Tooltip
+        $(function() {
+            $('[data-bs-toggle="tooltip"]').tooltip()
+        });
     </script>
     @stack('scripts')
 

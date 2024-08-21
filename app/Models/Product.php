@@ -33,6 +33,11 @@ class Product extends Model
         return $this->belongsToMany(Sale::class, 'sale_product')->withPivot('quantity', 'price');
     }
 
+    public function salesProducts()
+    {
+        return $this->hasMany(SaleProduct::class);
+    }
+
     public function getPriceAttribute($value)
     {
         return number_format($value, 2, ',', '.');
@@ -77,12 +82,4 @@ class Product extends Model
                   });
         });
     }
-
-    public function getSalesReport()
-{
-    return $this->sales()
-        ->select('sales.id', 'sales.created_at', \DB::raw('SUM(sale_product.quantity) as total_quantity'), \DB::raw('SUM(sale_product.price * sale_product.quantity) as total_revenue'))
-        ->groupBy('sales.id', 'sales.created_at')
-        ->get();
-}
 }

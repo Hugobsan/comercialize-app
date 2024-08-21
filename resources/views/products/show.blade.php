@@ -68,7 +68,7 @@
                 <i class="fas fa-file-pdf"></i> Exportar relatório
             </button>
         </div>
-        @include('sales.components.table', ['sales' => $product->sales])
+        @include('products.components.sales_table', ['product' => $product])
     </section>
 
 @endsection
