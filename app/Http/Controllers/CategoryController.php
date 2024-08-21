@@ -60,7 +60,12 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        //
+        if (!auth()->user()->can('view', $category)) {
+            toastr()->error('Você não tem permissão para visualizar categorias');
+            return redirect()->route('index');
+        }
+
+        return view('categories.show', compact('category'));
     }
 
     /**
@@ -81,7 +86,7 @@ class CategoryController extends Controller
         $category->update($request->all());
 
         toastr()->success('Categoria atualizada com sucesso');
-        return redirect()->route('categories.index');
+        return back();
     }
 
     /**

@@ -21,21 +21,27 @@
                     <i class="fas fa-bars"></i>
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                    <li><a class="dropdown-item" href="{{ route('products.show', $product->id) }}">Ver</a></li>
+                    @if (isset($dropdown['show']) && $dropdown['show'] || !isset($dropdown['show']))
+                        <li><a class="dropdown-item" href="{{ route('products.show', $product->id) }}">Ver</a></li>
+                    @endif
                     @can('update', $product)
-                        <li><button class="dropdown-item product-edit" data-id="{{ $product->id }}">Editar</button></li>
+                        @if (isset($dropdown['edit']) && $dropdown['edit'] || !isset($dropdown['edit']))
+                            <li><button class="dropdown-item product-edit" data-id="{{ $product->id }}">Editar</button></li>
+                        @endif
                     @endcan
                     @can('delete', $product)
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li class="btn-danger">
-                            <form action="{{ route('products.destroy', $product->id) }}" method="post" style="display: inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="dropdown-item">Excluir</button>
-                            </form>
-                        </li>
+                        @if (isset($dropdown['delete']) && $dropdown['delete'] || !isset($dropdown['delete']))
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li class="btn-danger">
+                                <form action="{{ route('products.destroy', $product->id) }}" method="post" style="display: inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="dropdown-item">Excluir</button>
+                                </form>
+                            </li>
+                        @endif
                     @endcan
                 </ul>
             </div>

@@ -71,16 +71,13 @@ class ProductController extends Controller
 
         $categories = Category::all();
 
-        return view('products.show', compact('product','categories'));
+        return view('products.show', compact('product', 'categories'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Product $product)
-    {
-        
-    }
+    public function edit(Product $product) {}
 
     /**
      * Update the specified resource in storage.
