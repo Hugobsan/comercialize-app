@@ -14,12 +14,24 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //Verificando se o usuário tem autorização para ver categorias
-        if (Auth::user()->can('view', Category::class)) {
-            $categories = Category::all();
-
-            return view('categories.index', compact('categories'));
+        if(!auth()->user()->can('view', Category::class)) {
+            toastr()->error('Você não tem permissão para visualizar categorias');
+            return redirect()->route('index');
         }
+
+        // Verifica se tem dados de pesquisa
+        $search = request()->input('search');
+
+        if ($search) {
+            //Pesquisa por nome ou código
+            $categories = Category::where('name', 'like', '%' . $search . '%')
+                ->orWhere('code', 'like', '%' . $search . '%')
+                ->orderBy('name')->paginate(15)->appends(['search' => $search]);
+        } else {
+            $categories = Category::orderBy('name')->paginate(15);
+        }
+        
+        return view('categories.index', compact('categories', 'search'));
     }
 
     /**
@@ -35,7 +47,12 @@ class CategoryController extends Controller
      */
     public function store(StoreCategoryRequest $request)
     {
-        //
+        $request->validated();
+
+        Category::create($request->all());
+
+        toastr()->success('Categoria cadastrada com sucesso');
+        return redirect()->route('categories.index');
     }
 
     /**
@@ -59,7 +76,12 @@ class CategoryController extends Controller
      */
     public function update(UpdateCategoryRequest $request, Category $category)
     {
-        //
+        $request->validated();
+
+        $category->update($request->all());
+
+        toastr()->success('Categoria atualizada com sucesso');
+        return redirect()->route('categories.index');
     }
 
     /**
@@ -67,6 +89,14 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        if (!auth()->user()->can('delete', $category)) {
+            toastr()->error('Você não tem permissão para excluir categorias');
+            return redirect()->route('index');
+        }
+
+        $category->delete();
+
+        toastr()->success('Categoria excluída com sucesso');
+        return redirect()->route('categories.index');
     }
 }

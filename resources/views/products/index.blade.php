@@ -41,11 +41,17 @@
         </div>
 
         <div class="row">
-            @foreach ($products as $product)
+            @forelse ($products as $product)
                 <div class="col-sm-12 col-md-4 col-lg-3">
                     @include('products.components.card_product', ['product' => $product])
                 </div>
-            @endforeach
+            @empty
+                <div class="col-12">
+                    <div class="alert alert-warning" role="alert">
+                        Nenhum produto encontrado.
+                    </div>
+                </div>
+            @endforelse
 
             <div class="paginator d-flex justify-content-center align-self-center">
                 {{ $products->links() }}

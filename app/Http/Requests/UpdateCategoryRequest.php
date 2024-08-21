@@ -11,7 +11,7 @@ class UpdateCategoryRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return auth()->user()->can('update', Category::class);
     }
 
     /**
@@ -22,7 +22,20 @@ class UpdateCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required|string|max:255',
+            'icon' => 'nullable|string|max:255',
+            'color' => 'nullable|string|size:7|regex:/^#[0-9a-fA-F]{6}$/',
+            'description' => 'nullable|string',
+        ];
+    }
+
+    public function attributes() : array
+    {
+        return [
+            'name' => 'nome',
+            'icon' => 'ícone',
+            'color' => 'cor',
+            'description' => 'descrição',
         ];
     }
 }

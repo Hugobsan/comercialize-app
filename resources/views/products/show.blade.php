@@ -18,6 +18,9 @@
                             <i class="{{ $product->category->icon }}"></i>
                             {{ $product->category->name }}
                         </div>
+                        <p>
+                            {{ $product->category->description }}
+                        </p>
                     @endisset
                     <p>R$ {{ $product->price }}</p>
                     <p class="{{ $product->quantity <= 5 ? 'text-danger' : '' }}">Estoque: {{ $product->quantity }}</p>

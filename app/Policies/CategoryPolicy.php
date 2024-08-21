@@ -23,7 +23,7 @@ class CategoryPolicy
         return $user->role === 'admin' || $user->role === 'seller';
     }
 
-    public function create(User $user)
+    public function create(User $user, Category $category)
     {
         return $user->role === 'admin';
     }
