@@ -3,8 +3,8 @@ Componente de tabela para exibição de vendas
 $sales: coleção de vendas
 --}}
 
-<div class="table-responsive">
-    <table class="table table-striped table-hover data-table">
+<div class="table-responsive my-2">
+    <table class="table table-striped table-hover">
         <thead>
             <tr>
                 <th scope="col">ID</th>
