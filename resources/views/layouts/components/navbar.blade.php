@@ -7,20 +7,26 @@
         </button>
         <div class="collapse navbar-collapse" id="collapsibleNavId">
             <ul class="navbar-nav me-auto mt-2 mt-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link {{ Request::is('sales') ? 'active' : '' }}"
-                        href="{{ route('sales.create') }}">Vender</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {{ Request::is('products') ? 'active' : ''}}"
-                        href="{{ route('products.index') }}">Produtos</a>
-                </li>
-                @if (auth()->user()->role == 'admin')
+                @can('view', App\Models\Sale::class)
+                    <li class="nav-item">
+                        <a class="nav-link {{ Request::is('sales') ? 'active' : '' }}"
+                            href="{{ route('sales.index') }}">Vendas</a>
+                    </li>
+                @endcan
+
+                @can('view', App\Models\Product::class)
+                    <li class="nav-item">
+                        <a class="nav-link {{ Request::is('products') ? 'active' : '' }}"
+                            href="{{ route('products.index') }}">Produtos</a>
+                    </li>
+                @endcan
+                @can('view', App\Models\Category::class)
                     <li class="nav-item">
                         <a class="nav-link {{ Request::is('categories') ? 'active' : '' }}"
                             href="{{ route('categories.index') }}">Categorias</a>
                     </li>
-
+                @endcan
+                @if(auth()->user()->role === 'admin')
                     <li class="nav-item">
                         <a class="nav-link {{ Request::is('users') ? 'active' : '' }}"
                             href="{{ route('users.index') }}">Usuários</a>
@@ -28,6 +34,15 @@
                 @endif
             </ul>
             <div class="end-menu">
+                <ul>
+                    @can('create', App\Models\Sale::class)
+                        <li class="nav-item btn btn-success mt-2">
+                            <a class="nav-link" href="{{ route('sales.create') }}">
+                                <i class="fas fa-cart-shopping"></i> Vender
+                            </a>
+                        </li>
+                    @endcan
+                </ul>
                 <ul>
                     @if (auth()->user()->role != 'admin')
                         <li class="nav-item">
@@ -45,7 +60,6 @@
                                         {{ auth()->user()->name[0] }}
                                     </div>
                                 </div>
-
                             </a>
                         </li>
                     @endif
