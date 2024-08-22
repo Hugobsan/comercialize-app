@@ -7,6 +7,7 @@ use App\Http\Requests\StoreSaleRequest;
 use App\Http\Requests\UpdateSaleRequest;
 use App\Models\Product;
 use App\Models\SaleProduct;
+use App\Models\User;
 
 class SaleController extends Controller
 {
@@ -52,7 +53,20 @@ class SaleController extends Controller
      */
     public function create()
     {
-        //
+        $sellers = User::where('role', 'seller')->get();
+        $customers = User::where('role', 'customer')->get();
+        $products = Product::all();
+
+        $cart = session('cart', []);
+
+        //parsing cart->product_id to product
+        $cart_products = array_map(function ($item) use ($products) {
+            $product = $products->firstWhere('id', $item['product_id']);
+            $item['product'] = $product;
+            return $item;
+        }, $cart);
+
+        return view('sales.create', compact('sellers', 'customers', 'products', 'cart_products'));
     }
 
     /**
