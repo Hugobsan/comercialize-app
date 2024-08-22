@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\Sale;
 use App\Models\SaleProduct;
 use App\Models\User;
+use App\Observers\SaleObserver;
 use App\Observers\SaleProductObserver;
 use App\Observers\UserObserver;
 use App\Policies\CategoryPolicy;
@@ -40,5 +41,6 @@ class AppServiceProvider extends ServiceProvider
         Paginator::useBootstrap();
         User::observe(UserObserver::class);
         SaleProduct::observe(SaleProductObserver::class);
+        Sale::observe(SaleObserver::class);
     }
 }
