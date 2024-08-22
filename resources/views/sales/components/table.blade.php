@@ -20,7 +20,7 @@ $sales: coleção de vendas
                     <th scope="row">{{ $sale->id }}</th>
                     <td>{{ $sale->customer->name }}</td>
                     <td>{{ $sale->created_at->format('d/m/Y H:i') }}</td>
-                    <td>R$ {{ $sale->total_amount }}</td>
+                    <td>R$ {{ $sale->formatted_total_amount }}</td>
                     <td>
                         <a href="{{ route('sales.show', $sale->id) }}" class="btn btn-primary" data-bs-toggle="tooltip" title="Ver detalhes da venda">
                             Detalhes

@@ -20,7 +20,7 @@
                         <strong>Cliente:</strong> {{ $sale->customer->name }}<br>
                         <strong>Vendedor:</strong> {{ $sale->seller->name }}<br>
                         <strong>Data:</strong> {{ $sale->created_at->format('d/m/Y H:i') }}<br>
-                        <strong>Total:</strong> R$ {{ $sale->total_amount }}<br>
+                        <strong>Total:</strong> R$ {{ $sale->formatted_total_amount }}<br>
                         <strong>Quant. de itens comprados: </strong> {{ $sale->total_quantity }}
                     </p>
                 </div>
@@ -45,7 +45,7 @@
                     </ul>
                 </div>
             </div>
-            <div class="table-responsive">
+            <div class="table-responsive my-3 py-3 bg-white rounded shadow row">
                 <table class="table table-striped data-table">
                     <thead>
                         <tr>
@@ -65,8 +65,24 @@
                                 <td>{{ $item->formatted_price }}</td>
                                 <td>{{ $item->formatted_total_price }}</td>
                                 <td>
+                                    {{-- Acrescentar item --}}
+                                    <form action="{{ route('sales.update-item', ['saleProduct' => $item->id]) }}" method="post" style="display: inline;">
+                                        @csrf
+                                        @method('PUT')
+                                        <input type="hidden" name="quantity" value="{{ $item->quantity + 1 }}">
+                                        <button type="submit" class="btn btn-success" id="btn-plus" data-stock="{{ $item->product->quantity }}"><i class="fas fa-plus"></i></button>
+                                    </form>
+
+                                    {{-- Diminuir item --}}
+                                    <form action="{{ route('sales.update-item', ['saleProduct' => $item->id]) }}" method="post" style="display: inline;">
+                                        @csrf
+                                        @method('PUT')
+                                        <input type="hidden" name="quantity" value="{{ $item->quantity - 1 }}">
+                                        <button type="submit" class="btn btn-warning" id="btn-minus" data-quantity="{{ $item->quantity }}"><i class="fas fa-minus"></i></button>
+                                    </form>
+
                                     {{-- Remover item --}}
-                                    <form action="{{ route('sales.remove-item', $item->id) }}" method="post" style="display: inline;">
+                                    <form action="{{ route('sales.remove-item', ['saleProduct' => $item->id]) }}" method="post" style="display: inline;">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i></button>
@@ -86,3 +102,25 @@
 
     </div>
 @endsection
+
+@push('scripts')
+    <script>
+        $(document).ready(function() {
+            //Removendo botao de diminuir caso a quantidade seja 1
+            $('form button[id="btn-minus"]').each(function() {
+                if ($(this).data('quantity') == 1) {
+                    $(this).remove();
+                }
+            });
+
+            //Desabilitando botao de adicionar caso o estoque seja 0
+            $('form button[id="btn-plus"]').each(function() {
+                if ($(this).data('stock') == 0) {
+                    $(this).prop('disabled', true);
+                }
+            });
+
+
+        });
+    </script>
+@endpush

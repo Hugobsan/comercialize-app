@@ -139,12 +139,24 @@ class SaleController extends Controller
             return redirect()->route('index');
         }
 
-        $total_item = $saleProduct->quantity * $saleProduct->price;
         $saleProduct->delete();
 
-        //Recalculando total
-
         toastr()->success('Item removido da venda');
-        return redirect()->back();
+        return back();
+    }
+
+    public function updateItem(SaleProduct $saleProduct){
+        if(!auth()->user()->can('update', $saleProduct->sale)) {
+            toastr()->error('Você não tem permissão para atualizar itens da venda');
+            return redirect()->route('index');
+        }
+
+        
+
+        $saleProduct->quantity = request()->quantity;
+        $saleProduct->save();
+
+        toastr()->success('Quantidade atualizada');
+        return back();
     }
 }

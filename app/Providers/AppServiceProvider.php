@@ -5,7 +5,9 @@ namespace App\Providers;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Sale;
+use App\Models\SaleProduct;
 use App\Models\User;
+use App\Observers\SaleProductObserver;
 use App\Observers\UserObserver;
 use App\Policies\CategoryPolicy;
 use App\Policies\ProductPolicy;
@@ -37,5 +39,6 @@ class AppServiceProvider extends ServiceProvider
         //
         Paginator::useBootstrap();
         User::observe(UserObserver::class);
+        SaleProduct::observe(SaleProductObserver::class);
     }
 }

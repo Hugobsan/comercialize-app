@@ -19,7 +19,7 @@ class Sale extends Model
         'updated_at' => 'datetime',
     ];
 
-    protected $appends = ['unformatted_total_amount'];
+    protected $appends = ['formatted_total_amount'];
 
     public function seller()
     {
@@ -41,13 +41,13 @@ class Sale extends Model
         return $this->hasMany(SaleProduct::class);
     }
 
-    public function getTotalAmountAttribute($value)
+    public function getFormattedTotalAmountAttribute()
     {
-        return number_format($value, 2, ',', '.');
+        return number_format($this->total_amount, 2, ',', '.');
     }
 
-    public function getUnformattedTotalAmountAttribute()
+    public function setTotalAmountAttribute($value)
     {
-        return $this->attributes['total_amount'];
+        $this->attributes['total_amount'] = str_replace(',', '', $value);
     }
 }
