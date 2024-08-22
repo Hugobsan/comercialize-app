@@ -132,6 +132,35 @@ class SaleController extends Controller
         return redirect()->back();
     }
 
+    public function removeFromCart(Product $product)
+    {
+        //Removendo o produto do carrinho na sessão
+        $cart = session('cart', []);
+
+        //Verifica se o produto já está no carrinho
+        $productIndex = array_search($product->id, array_column($cart, 'product_id'));
+
+        if ($productIndex !== false) {
+            unset($cart[$productIndex]);
+        }
+
+        session(['cart' => $cart]);
+
+        toastr()->success('Produto removido do carrinho');
+        return redirect()->back();
+    }
+
+    public function getCart()
+    {
+        $cart = session('cart', []);
+
+        $count_cart = count(session('cart', []));
+
+        $products = Product::whereIn('id', array_column($cart, 'product_id'))->get();
+
+        return view('sales.cart', compact('cart', 'products'));
+    }
+
     public function removeItem(SaleProduct $saleProduct)
     {
         if(!auth()->user()->can('delete', $saleProduct->sale)) {
@@ -151,7 +180,7 @@ class SaleController extends Controller
             return redirect()->route('index');
         }
 
-        
+
 
         $saleProduct->quantity = request()->quantity;
         $saleProduct->save();

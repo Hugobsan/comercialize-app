@@ -37,7 +37,7 @@
                 <ul>
                     @can('create', App\Models\Sale::class)
                         <li class="nav-item btn btn-success mt-2">
-                            <a class="nav-link" href="{{ route('sales.create') }}">
+                            <a class="nav-link nav-sell-button" href="{{ route('sales.create') }}">
                                 <i class="fas fa-cart-shopping"></i> Vender
                             </a>
                         </li>
