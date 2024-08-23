@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateSaleRequest;
 use App\Models\Product;
 use App\Models\SaleProduct;
 use App\Models\User;
+use Illuminate\Http\Request;
 
 class SaleController extends Controller
 {
@@ -65,8 +66,13 @@ class SaleController extends Controller
             $item['product'] = $product;
             return $item;
         }, $cart);
+        
+        //Calculando o total a partir do valor atual dos produtos no banco
+        $total = array_reduce($cart_products, function ($carry, $item) {
+            return $carry + (float) $item['product']->unformatted_price * $item['quantity'];
+        }, 0);
 
-        return view('sales.create', compact('sellers', 'customers', 'products', 'cart_products'));
+        return view('sales.create', compact('sellers', 'customers', 'products', 'cart_products', 'total'));
     }
 
     /**
@@ -82,7 +88,7 @@ class SaleController extends Controller
      */
     public function show(Sale $sale)
     {
-        if(!auth()->user()->can('view', $sale)) {
+        if (!auth()->user()->can('view', $sale)) {
             toastr()->error('Você não tem permissão para visualizar vendas');
             return redirect()->route('index');
         }
@@ -111,7 +117,7 @@ class SaleController extends Controller
      */
     public function destroy(Sale $sale)
     {
-        if(!auth()->user()->can('delete', $sale)) {
+        if (!auth()->user()->can('delete', $sale)) {
             toastr()->error('Você não tem permissão para deletar vendas');
             return redirect()->route('index');
         }
@@ -122,10 +128,19 @@ class SaleController extends Controller
         return redirect()->route('sales.index');
     }
 
-    public function addToCart(Product $product)
+    public function addToCart(Request $request, Product $product = null)
     {
         //Adicionando o produto ao carrinho na sessão
         $cart = session('cart', []);
+
+        $product = $product ?? Product::find($request->product_id);
+
+        $quantity = $request->quantity ?? 1;
+
+        if ($product->quantity < $quantity) {
+            toastr()->error('Quantidade indisponível em estoque');
+            return back();
+        }
 
         //Verifica se o produto já está no carrinho
         $productIndex = array_search($product->id, array_column($cart, 'product_id'));
@@ -133,13 +148,18 @@ class SaleController extends Controller
         if ($productIndex === false) {
             $cart[] = [
                 'product_id' => $product->id,
-                'quantity' => 1,
+                'quantity' => $quantity,
                 'price' => $product->price,
             ];
         } else {
-            $cart[$productIndex]['quantity']++;
+            //Verifica se a quantidade adicionada é maior que a disponível em estoque
+            if ($product->quantity < $cart[$productIndex]['quantity'] + $quantity) {
+                toastr()->error('Quantidade indisponível em estoque');
+                return back();
+            } else{
+                $cart[$productIndex]['quantity'] += $quantity;
+            }
         }
-
         session(['cart' => $cart]);
 
         toastr()->success('Produto adicionado ao carrinho');
@@ -177,7 +197,7 @@ class SaleController extends Controller
 
     public function removeItem(SaleProduct $saleProduct)
     {
-        if(!auth()->user()->can('delete', $saleProduct->sale)) {
+        if (!auth()->user()->can('delete', $saleProduct->sale)) {
             toastr()->error('Você não tem permissão para deletar itens da venda');
             return redirect()->route('index');
         }
@@ -188,8 +208,9 @@ class SaleController extends Controller
         return back();
     }
 
-    public function updateItem(SaleProduct $saleProduct){
-        if(!auth()->user()->can('update', $saleProduct->sale)) {
+    public function updateItem(SaleProduct $saleProduct)
+    {
+        if (!auth()->user()->can('update', $saleProduct->sale)) {
             toastr()->error('Você não tem permissão para atualizar itens da venda');
             return redirect()->route('index');
         }

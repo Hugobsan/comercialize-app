@@ -21,7 +21,7 @@ Route::post('/login', [AuthController::class, 'login'])->name('login');
 
 Route::middleware('auth')->group(function () {
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
-    Route::get('/add-to-cart/{product}', [SaleController::class, 'addToCart'])->name('sales.add-to-cart');
+    Route::get('/add-to-cart/{product?}', [SaleController::class, 'addToCart'])->name('sales.add-to-cart');
     Route::get('/remove-from-cart/{product}', [SaleController::class, 'removeFromCart'])->name('sales.remove-from-cart');
     Route::get('/clear-cart', [SaleController::class, 'clearCart'])->name('sales.clear-cart');
     Route::put('/update-item/{saleProduct}', [SaleController::class, 'updateItem'])->name('sales.update-item');
