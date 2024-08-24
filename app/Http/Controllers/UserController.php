@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -11,7 +12,25 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        if(!auth()->user()->can('view', User::class)){
+            toastr()->error('Você não tem permissão para acessar essa página');
+            return back();
+        }
+
+        $query = request()->query();
+
+        if ($query) {
+            $users = User::where('name', 'like', '%' . $query['search'] . '%')
+                ->orWhere('role', 'like', '%' . $query['search'] . '%')
+                ->orWhere('email', 'like', '%' . $query['search'] . '%')
+                ->orderBy('name')
+                ->paginate(10)
+                ->appends($query);
+        } else{
+            $users = User::orderBy('name')->paginate(10);
+        }
+
+        return view('users.index', compact('users'));
     }
 
     /**
