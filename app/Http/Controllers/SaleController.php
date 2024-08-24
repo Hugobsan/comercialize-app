@@ -9,6 +9,7 @@ use App\Models\Product;
 use App\Models\SaleProduct;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class SaleController extends Controller
 {
@@ -66,7 +67,7 @@ class SaleController extends Controller
             $item['product'] = $product;
             return $item;
         }, $cart);
-        
+
         //Calculando o total a partir do valor atual dos produtos no banco
         $total = array_reduce($cart_products, function ($carry, $item) {
             return $carry + (float) $item['product']->unformatted_price * $item['quantity'];
@@ -85,26 +86,49 @@ class SaleController extends Controller
         if (count($cart) === 0) {
             toastr()->error('Carrinho vazio');
             return back();
-        }
+        }  
 
-        $sale = Sale::create([
-            'seller_id' => $request->seller_id,
-            'customer_id' => $request->customer_id,
-            'total' => $request->total,
-        ]);
+        //Calculando o total a partir do valor atual dos produtos no banco
+        $total_amount = array_reduce($cart, function ($carry, $item) {
+            return $carry + (float) $item['product']->unformatted_price * $item['quantity'];
+        }, 0);
 
-        foreach ($cart as $item) {
-            SaleProduct::create([
-                'sale_id' => $sale->id,
-                'product_id' => $item['product_id'],
-                'quantity' => $item['quantity'],
+        $total_quantity = array_reduce($cart, function ($carry, $item) {
+            return $carry + $item['quantity']; //
+        }, 0);
+
+        try {
+            DB::beginTransaction();
+
+            $sale = Sale::create([
+                'seller_id' => $request->seller,
+                'customer_id' => $request->customer,
+                'total_amount' => $total_amount,
+                'total_quantity' => $total_quantity,
             ]);
+
+            foreach ($cart as $item) {
+                SaleProduct::create([
+                    'sale_id' => $sale->id,
+                    'product_id' => $item['product_id'],
+                    'quantity' => $item['quantity'],
+                    'price' => $item['product']->unformatted_price,
+                ]);
+            }
+
+            DB::commit();
+            session()->forget('cart');
+
+            toastr()->success('Venda realizada com sucesso');
+            return redirect()->route('sales.index');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            dd($e->getMessage());
+
+            toastr()->error('Erro ao realizar a venda');
+            return back();
         }
-
-        session()->forget('cart');
-
-        toastr()->success('Venda realizada com sucesso');
-        return redirect()->route('sales.index');
     }
 
     /**
