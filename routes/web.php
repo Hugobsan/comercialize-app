@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SaleController;
@@ -21,13 +22,20 @@ Route::post('/login', [AuthController::class, 'login'])->name('login');
 
 Route::middleware('auth')->group(function () {
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
-    Route::get('/add-to-cart/{product?}', [SaleController::class, 'addToCart'])->name('sales.add-to-cart');
-    Route::get('/remove-from-cart/{product}', [SaleController::class, 'removeFromCart'])->name('sales.remove-from-cart');
-    Route::get('/clear-cart', [SaleController::class, 'clearCart'])->name('sales.clear-cart');
     Route::put('/update-item/{saleProduct}', [SaleController::class, 'updateItem'])->name('sales.update-item');
     Route::delete('/remove-item/{saleProduct}', [SaleController::class, 'removeItem'])->name('sales.remove-item');
     Route::resource('sales', SaleController::class);
     Route::resource('products', ProductController::class);
     Route::resource('categories', CategoryController::class);
     Route::resource('users', UserController::class);
+    
+    Route::group(['prefix' => 'cart', 'as' => 'cart.'], function () {
+        Route::get('/add/{product?}', [CartController::class, 'addToCart'])->name('add');
+        Route::get('/decrease/{product}', [CartController::class, 'decreaseFromCart'])->name('decrease');
+        Route::get('/update/{product}', [CartController::class, 'updateCart'])->name('update');
+        Route::get('/remove/{product}', [CartController::class, 'removeFromCart'])->name('remove');
+        Route::get('/clear', [CartController::class, 'clearCart'])->name('clear');
+        Route::get('/', [CartController::class, 'getCart'])->name('index');
+    });
+
 });

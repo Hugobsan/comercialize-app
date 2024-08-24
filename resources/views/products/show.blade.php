@@ -54,7 +54,7 @@
                     </div>
                 </div>
                 <div class="d-flex flex-row justify-content-end">
-                    <a href="{{ route('sales.add-to-cart', $product->id) }}" class="btn btn-success" data-bs-toggle="tooltip" title="Adicionar ao carrinho de compras">
+                    <a href="{{ route('cart.add', $product->id) }}" class="btn btn-success" data-bs-toggle="tooltip" title="Adicionar ao carrinho de compras">
                         <i class="fas fa-cart-plus"></i> Adicionar ao carrinho
                     </a>
                 </div>

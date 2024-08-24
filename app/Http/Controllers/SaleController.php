@@ -80,7 +80,31 @@ class SaleController extends Controller
      */
     public function store(StoreSaleRequest $request)
     {
-        //
+        $cart = session('cart', []);
+
+        if (count($cart) === 0) {
+            toastr()->error('Carrinho vazio');
+            return back();
+        }
+
+        $sale = Sale::create([
+            'seller_id' => $request->seller_id,
+            'customer_id' => $request->customer_id,
+            'total' => $request->total,
+        ]);
+
+        foreach ($cart as $item) {
+            SaleProduct::create([
+                'sale_id' => $sale->id,
+                'product_id' => $item['product_id'],
+                'quantity' => $item['quantity'],
+            ]);
+        }
+
+        session()->forget('cart');
+
+        toastr()->success('Venda realizada com sucesso');
+        return redirect()->route('sales.index');
     }
 
     /**
@@ -126,73 +150,6 @@ class SaleController extends Controller
 
         toastr()->success('Venda deletada com sucesso');
         return redirect()->route('sales.index');
-    }
-
-    public function addToCart(Request $request, Product $product = null)
-    {
-        //Adicionando o produto ao carrinho na sessão
-        $cart = session('cart', []);
-
-        $product = $product ?? Product::find($request->product_id);
-
-        $quantity = $request->quantity ?? 1;
-
-        if ($product->quantity < $quantity) {
-            toastr()->error('Quantidade indisponível em estoque');
-            return back();
-        }
-
-        //Verifica se o produto já está no carrinho
-        $productIndex = array_search($product->id, array_column($cart, 'product_id'));
-
-        if ($productIndex === false) {
-            $cart[] = [
-                'product_id' => $product->id,
-                'quantity' => $quantity,
-                'price' => $product->price,
-            ];
-        } else {
-            //Verifica se a quantidade adicionada é maior que a disponível em estoque
-            if ($product->quantity < $cart[$productIndex]['quantity'] + $quantity) {
-                toastr()->error('Quantidade indisponível em estoque');
-                return back();
-            } else{
-                $cart[$productIndex]['quantity'] += $quantity;
-            }
-        }
-        session(['cart' => $cart]);
-
-        toastr()->success('Produto adicionado ao carrinho');
-        return redirect()->back();
-    }
-
-    public function removeFromCart(Product $product)
-    {
-        //Removendo o produto do carrinho na sessão
-        $cart = session('cart', []);
-
-        //Verifica se o produto já está no carrinho
-        $productIndex = array_search($product->id, array_column($cart, 'product_id'));
-
-        if ($productIndex !== false) {
-            unset($cart[$productIndex]);
-        }
-
-        session(['cart' => $cart]);
-
-        toastr()->success('Produto removido do carrinho');
-        return redirect()->back();
-    }
-
-    public function getCart()
-    {
-        $cart = session('cart', []);
-
-        $count_cart = count(session('cart', []));
-
-        $products = Product::whereIn('id', array_column($cart, 'product_id'))->get();
-
-        return view('sales.cart', compact('cart', 'products'));
     }
 
     public function removeItem(SaleProduct $saleProduct)

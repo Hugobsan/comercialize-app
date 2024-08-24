@@ -5,7 +5,7 @@
                 <h5 class="modal-title" id="createProductLabel">Adicionar Produto</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="{{ route('sales.add-to-cart') }}" method="GET">
+            <form action="{{ route('cart.add') }}" method="GET">
                 @csrf
                 <div class="modal-body">
                     <div class="form-group">

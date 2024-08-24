@@ -49,6 +49,7 @@
                             <th scope="col">Produto</th>
                             <th scope="col">Quantidade</th>
                             <th scope="col">Preço Un.</th>
+                            <th scope="col">Ações</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -57,6 +58,23 @@
                                 <td>{{ $cart_product['product']->name }}</td>
                                 <td>{{ $cart_product['quantity'] }}</td>
                                 <td>R$ {{ $cart_product['product']->price }}</td>
+                                <td>
+                                    {{-- Acrescentar item --}}
+                                    <a class="btn btn-success btn-plus" href="{{ route('cart.add', ['product' => $cart_product['product']->id]) }}" data-stock="{{ $cart_product['quantity'] }}">
+                                        <i class="fas fa-plus"></i>
+                                    </a>
+
+                                    {{-- Diminuir item --}}
+                                    <a class="btn btn-warning btn-minus" href="{{ route('cart.decrease', ['product' => $cart_product['product']->id]) }}" data-quantity="{{ $cart_product['quantity'] }}">
+                                        <i class="fas fa-minus"></i>
+                                    </a>
+
+                                    {{-- Remover item --}}
+                                    <a class="btn btn-danger" href="{{ route('cart.remove', ['product' => $cart_product['product']->id]) }}">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                    </a>
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -78,3 +96,23 @@
     <!-- Add Product Modal -->
     @include('sales.components.add-product', ['products' => $products])
 @endsection
+
+@push('scripts')
+    <script>
+        $(document).ready(function() {
+            //Removendo botao de diminuir caso a quantidade seja 1
+            $('.btn-minus').each(function() {
+                if ($(this).data('quantity') == 1) {
+                    $(this).remove();
+                }
+            });
+
+            //Desabilitando botao de adicionar caso o estoque seja 0
+            $('.btn-plus').each(function() {
+                if ($(this).data('stock') == 0) {
+                    $(this).prop('disabled', true);
+                }
+            });
+        });
+    </script>
+@endpush
