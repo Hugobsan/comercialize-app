@@ -122,6 +122,7 @@ class SaleController extends Controller
             DB::commit();
             session()->forget('cart');
 
+            $sale = Sale::with('customer', 'seller', 'products')->find($sale->id);
             event(new SaleCreate($sale));
 
             toastr()->success('Venda realizada com sucesso');
