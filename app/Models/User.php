@@ -49,11 +49,6 @@ class User extends Authenticatable
 
     public function sales()
     {
-        return $this->hasMany(Sale::class, 'seller_id');
-    }
-
-    public function boughtSales()
-    {
-        return $this->hasMany(Sale::class, 'customer_id');
+        return $this->hasMany(Sale::class, 'seller_id')->orWhere('customer_id', $this->id);
     }
 }

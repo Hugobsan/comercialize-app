@@ -4,7 +4,7 @@ $sales: coleção de vendas
 --}}
 
 <div class="table-responsive my-2">
-    <table class="table table-striped table-hover">
+    <table class="table table-striped table-hover {{ isset($hasDataTable) && $hasDataTable ? 'data-table' : '' }}">
         <thead>
             <tr>
                 <th scope="col">ID</th>
@@ -35,4 +35,3 @@ $sales: coleção de vendas
         </tbody>
     </table>
 </div>
-

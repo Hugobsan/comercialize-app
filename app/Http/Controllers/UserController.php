@@ -7,6 +7,7 @@ use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -26,11 +27,12 @@ class UserController extends Controller
             $users = User::where('name', 'like', '%' . $query['search'] . '%')
                 ->orWhere('role', 'like', '%' . $query['search'] . '%')
                 ->orWhere('email', 'like', '%' . $query['search'] . '%')
+                ->withTrashed()
                 ->orderBy('name')
                 ->paginate(10)
                 ->appends($query);
         } else {
-            $users = User::orderBy('name')->paginate(10);
+            $users = User::withTrashed()->orderBy('name')->paginate(10);
         }
 
         return view('users.index', compact('users'));
@@ -80,14 +82,24 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $user)
+    public function destroy(Request $request, User $user)
     {
         if (!auth()->user()->can('delete', $user)) {
             toastr()->error('Você não tem permissão para deletar esse usuário');
             return back();
         }
 
+        $isSame = auth()->user()->id === $user->id;
         $user->delete();
+
+        if ($isSame) {
+            Auth::logout();
+            $request->session()->invalidate();
+
+            $request->session()->regenerateToken();
+        }
+
+
         toastr()->success('Usuário deletado com sucesso');
         return redirect()->route('users.index');
     }
