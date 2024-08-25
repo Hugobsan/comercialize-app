@@ -27,7 +27,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::put('/update-item/{saleProduct}', [SaleController::class, 'updateItem'])->name('sales.update-item');
     Route::delete('/remove-item/{saleProduct}', [SaleController::class, 'removeItem'])->name('sales.remove-item');
+    Route::get('sales/pdf', [SaleController::class, 'generatePDF'])->name('sales.pdf');
     Route::resource('sales', SaleController::class);
+    Route::get('products/pdf/{product}', [ProductController::class, 'generatePDF'])->name('products.pdf');
     Route::resource('products', ProductController::class);
     Route::resource('categories', CategoryController::class);
     Route::post('users/reset-password/{user}', [UserController::class, 'resetPassword'])->name('users.reset');

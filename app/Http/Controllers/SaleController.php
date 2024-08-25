@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateSaleRequest;
 use App\Models\Product;
 use App\Models\SaleProduct;
 use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -206,12 +207,34 @@ class SaleController extends Controller
             return redirect()->route('index');
         }
 
-
-
         $saleProduct->quantity = request()->quantity;
         $saleProduct->save();
 
         toastr()->success('Quantidade atualizada');
         return back();
+    }
+
+    public function generatePDF($product = null, $category = null)
+    {
+        // Obtém os dados das vendas
+        $sales = Sale::with('seller', 'customer', 'products', 'products.category')
+            ->when($product, function ($query, $product) {
+                return $query->whereHas('products', function ($query) use ($product) {
+                    $query->where('name', 'like', '%' . $product . '%');
+                });
+            })
+            ->when($category, function ($query, $category) {
+                return $query->whereHas('products.category', function ($query) use ($category) {
+                    $query->where('name', 'like', '%' . $category . '%');
+                });
+            })
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        // Gera o PDF a partir da view e passa os dados para a view
+        $pdf = Pdf::loadView('pdf.sales', compact('sales'));
+
+        // Retorna o PDF renderizado para o navegador
+        return $pdf->stream('vendas.pdf');
     }
 }

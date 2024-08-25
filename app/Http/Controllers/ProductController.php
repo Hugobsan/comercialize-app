@@ -6,6 +6,7 @@ use App\Models\Product;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Category;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class ProductController extends Controller
 {
@@ -106,5 +107,11 @@ class ProductController extends Controller
 
         toastr()->success('Produto deletado com sucesso');
         return redirect()->route('products.index');
+    }
+
+    public function generatePdf(Product $product)
+    {
+        $pdf = Pdf::loadView('pdf.saleProducts', compact('product'));
+        return $pdf->stream('product-' . $product->id . '.pdf');
     }
 }

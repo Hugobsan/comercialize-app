@@ -64,9 +64,11 @@
     <section class="container my-3 p-3 bg-white rounded shadow">
         <div class="d-flex flex-row justify-content-between my-2">
             <h2>Vendas</h2>
-            <button class="btn btn-danger text-white p-2">
-                <i class="fas fa-file-pdf"></i> Exportar relatório
-            </button>
+            <a href="{{ route('products.pdf', ['product' => $product->id]) }}" target="_blank" class="text-white">
+                <button class="btn btn-danger text-white p-2">
+                    <i class="fas fa-file-pdf"></i> Exportar relatório
+                </button>
+            </a>
         </div>
         @include('products.components.sales_table', ['product' => $product])
     </section>

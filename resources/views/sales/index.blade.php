@@ -15,9 +15,11 @@
         <div class="d-flex flex-column align-content-center justify-content-center">
             <div class="topo">
                 <h1>Vendas</h1>
-                <button class="btn btn-danger text-white p-2">
-                    <i class="fas fa-file-pdf"></i> Exportar relatório
-                </button>
+                <a href="{{ route('sales.pdf') }}" target="_blank">
+                    <button class="btn btn-danger text-white p-2">
+                        <i class="fas fa-file-pdf"></i> Exportar relatório
+                    </button>
+                </a>
             </div>
             <div>
                 <form action="{{ route('sales.index') }}" method="GET">
@@ -38,11 +40,10 @@
                 {{ $sales->links() }}
             </div>
         </div>
-    
+
     </div>
 @endsection
 
 @push('scripts')
-    <script>
-    </script>
+    <script></script>
 @endpush

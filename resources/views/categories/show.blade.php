@@ -50,9 +50,6 @@
     <section class="container my-3 p-3 bg-white rounded shadow">
         <div class="d-flex flex-row justify-content-between my-2">
             <h2>Produtos na categoria</h2>
-            <button class="btn btn-danger text-white p-2">
-                <i class="fas fa-file-pdf"></i> Exportar relatório
-            </button>
         </div>
         <div>
             @php $products = $category->products()->paginate(4); @endphp
