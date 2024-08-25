@@ -28,10 +28,10 @@ Route::middleware('auth')->group(function () {
     Route::put('/update-item/{saleProduct}', [SaleController::class, 'updateItem'])->name('sales.update-item');
     Route::delete('/remove-item/{saleProduct}', [SaleController::class, 'removeItem'])->name('sales.remove-item');
     Route::get('sales/pdf', [SaleController::class, 'generatePDF'])->name('sales.pdf');
-    Route::resource('sales', SaleController::class);
+    Route::resource('sales', SaleController::class, ['except' => ['update', 'edit']]);
     Route::get('products/pdf/{product}', [ProductController::class, 'generatePDF'])->name('products.pdf');
-    Route::resource('products', ProductController::class);
-    Route::resource('categories', CategoryController::class);
+    Route::resource('products', ProductController::class, ['except' => ['create', 'edit']]);
+    Route::resource('categories', CategoryController::class, ['except' => ['create', 'edit']]);
     Route::post('users/reset-password/{user}', [UserController::class, 'resetPassword'])->name('users.reset');
     Route::resource('users', UserController::class);
     

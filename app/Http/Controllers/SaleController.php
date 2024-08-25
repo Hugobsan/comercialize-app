@@ -156,22 +156,6 @@ class SaleController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Sale $sale)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateSaleRequest $request, Sale $sale)
-    {
-        //
-    }
-
-    /**
      * Remove the specified resource from storage.
      */
     public function destroy(Sale $sale)
@@ -214,22 +198,10 @@ class SaleController extends Controller
         return back();
     }
 
-    public function generatePDF($product = null, $category = null)
+    public function generatePDF()
     {
         // Obtém os dados das vendas
-        $sales = Sale::with('seller', 'customer', 'products', 'products.category')
-            ->when($product, function ($query, $product) {
-                return $query->whereHas('products', function ($query) use ($product) {
-                    $query->where('name', 'like', '%' . $product . '%');
-                });
-            })
-            ->when($category, function ($query, $category) {
-                return $query->whereHas('products.category', function ($query) use ($category) {
-                    $query->where('name', 'like', '%' . $category . '%');
-                });
-            })
-            ->orderBy('created_at', 'desc')
-            ->get();
+        $sales = Sale::with('customer', 'seller')->get(); // Adapte a consulta conforme necessário
 
         // Gera o PDF a partir da view e passa os dados para a view
         $pdf = Pdf::loadView('pdf.sales', compact('sales'));
