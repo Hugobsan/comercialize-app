@@ -16,12 +16,8 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-
-            if (Auth::attempt($credentials)) {
-                $request->session()->regenerate();
-
-                return redirect()->intended('products.index');
-            }
+            
+            return redirect()->intended('products.index');
         }
 
         toastr()->error('Usuário e/ou senha inválidos');
