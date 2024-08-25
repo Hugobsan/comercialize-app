@@ -27,6 +27,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('sales', SaleController::class);
     Route::resource('products', ProductController::class);
     Route::resource('categories', CategoryController::class);
+    Route::post('users/reset-password/{user}', [UserController::class, 'resetPassword'])->name('users.reset');
     Route::resource('users', UserController::class);
     
     Route::group(['prefix' => 'cart', 'as' => 'cart.'], function () {

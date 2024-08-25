@@ -16,10 +16,14 @@
             <div class="topo">
                 <h1>Usuários</h1>
                 @can('create', App\Models\User::class)
-                    <a href="{{ route('users.create') }}" class="btn btn-primary">
-                        <i class="fas fa-plus"></i> Adicionar usuário
-                    </a>
-                @endcan
+                <!-- Modal button -->
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#create_user">
+                    <i class="fas fa-plus"></i> Cadastrar Usuário
+                </button>
+
+                <!-- Modal -->
+                @include('users.components.create')
+            @endcan
             </div>
             <div>
                 <form action="{{ route('users.index') }}" method="GET">
@@ -36,6 +40,7 @@
                 </form>
             </div>
             @include('users.components.table', ['users' => $users])
+            
             <div class="paginator d-flex justify-content-center align-self-center">
                 {{ $users->links() }}
             </div>
