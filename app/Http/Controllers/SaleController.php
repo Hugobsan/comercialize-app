@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\SaleCreate;
 use App\Models\Sale;
 use App\Http\Requests\StoreSaleRequest;
 use App\Http\Requests\UpdateSaleRequest;
@@ -130,13 +131,13 @@ class SaleController extends Controller
             DB::commit();
             session()->forget('cart');
 
+            event(new SaleCreate($sale));
+
             toastr()->success('Venda realizada com sucesso');
             return redirect()->route('sales.index');
         } catch (\Exception $e) {
             DB::rollBack();
-
-            dd($e->getMessage());
-
+            dd($e);
             toastr()->error('Erro ao realizar a venda');
             return back();
         }
