@@ -18,6 +18,12 @@ class SalePolicy
         }
     }
 
+    public function viewAny(User $user)
+    {
+        // Admins e vendedores podem ver a lista de vendas
+        return $user->role === 'admin' || $user->role === 'seller';
+    }
+
     public function view(User $user, Sale $sale)
     {
         if ($user->role === 'admin' || $user->role === 'seller') {
@@ -25,7 +31,7 @@ class SalePolicy
         }
 
         if ($user->role === 'costumer') {
-            return $user->id === $sale->user_id; 
+            return $user->id === $sale->user_id;
         }
 
         return false;

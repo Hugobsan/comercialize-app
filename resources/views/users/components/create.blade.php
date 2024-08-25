@@ -42,14 +42,14 @@
                     <div class="row">
                         <div class="col-sm-12 col-md-6 mb-3">
                             <label for="password" class="form-label">Senha</label>
-                            <input type="password" class="form-control" id="password" name="password" required>
+                            <input type="password" class="form-control" id="password" name="password" autocomplete="off" required>
                             @error('password')
                                 <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
                         </div>
                         <div class="col-sm-12 col-md-6 mb-3">
                             <label for="password_confirmation" class="form-label">Confirmação de senha</label>
-                            <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
+                            <input type="password" class="form-control" id="password_confirmation" autocomplete="off" name="password_confirmation" required>
                             @error('password_confirmation')
                                 <div class="alert alert-danger">{{ $message }}</div>
                             @enderror

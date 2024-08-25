@@ -7,20 +7,20 @@
         </button>
         <div class="collapse navbar-collapse" id="collapsibleNavId">
             <ul class="navbar-nav me-auto mt-2 mt-lg-0">
-                @can('view', App\Models\Sale::class)
+                @can('viewAny', App\Models\Sale::class)
                     <li class="nav-item">
                         <a class="nav-link {{ Request::is('sales') ? 'active' : '' }}"
                             href="{{ route('sales.index') }}">Vendas</a>
                     </li>
                 @endcan
 
-                @can('view', App\Models\Product::class)
+                @can('viewAny', App\Models\Product::class)
                     <li class="nav-item">
                         <a class="nav-link {{ Request::is('products') ? 'active' : '' }}"
                             href="{{ route('products.index') }}">Produtos</a>
                     </li>
                 @endcan
-                @can('view', App\Models\Category::class)
+                @can('viewAny', App\Models\Category::class)
                     <li class="nav-item">
                         <a class="nav-link {{ Request::is('categories') ? 'active' : '' }}"
                             href="{{ route('categories.index') }}">Categorias</a>

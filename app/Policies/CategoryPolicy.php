@@ -18,6 +18,11 @@ class CategoryPolicy
         }
     }
 
+    public function viewAny(User $user)
+    {
+        return $user->role === 'admin' || $user->role === 'seller';
+    }
+
     public function view(User $user, Category $category)
     {
         return $user->role === 'admin' || $user->role === 'seller';

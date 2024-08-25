@@ -15,7 +15,7 @@ class ProductController extends Controller
     public function index()
     {
         //Verifica se o usuário tem permissão de visualizar produtos
-        if (!auth()->user()->can('view', Product::class)) {
+        if (!auth()->user()->can('viewAny', Product::class)) {
             toastr()->error('Você não tem permissão para visualizar produtos');
             return redirect()->route('index');
         }

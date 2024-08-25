@@ -17,10 +17,17 @@ class ProductPolicy
             return true;
         }
     }
+    
+    public function viewAny(User $user)
+    {
+        // Qualquer usuário pode ver a lista de produtos
+        return true;
+    }
 
     public function view(User $user, Product $product)
     {
-        return $user->role === 'admin' || $user->role === 'seller' || $user->role === 'costumer';
+        //Qualquer um vê produtos
+        return true;
     }
 
     public function create(User $user)

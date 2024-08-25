@@ -16,6 +16,12 @@ class UserPolicy
             return true;
         }
     }
+
+    public function viewAny(User $user)
+    {
+        return $user->role === 'admin';
+    }
+    
     /**
      * Determine whether the user can view the model.
      */

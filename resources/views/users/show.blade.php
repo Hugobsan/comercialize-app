@@ -3,6 +3,7 @@
 @section('title', $user->name)
 
 @section('content')
+    @include('users.components.create')
     <div class="container">
         <div class="d-flex flex-column align-items-center justify-content-center">
             <div class="container my-3 p-3 bg-white rounded shadow row">
@@ -31,7 +32,21 @@
                         <i class="fas fa-bars"></i>
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                        <li><a class="dropdown-item" href="{{ route('users.index') }}">Voltar</a></li>
+                        @can('update', $user)
+                            <li><button class="dropdown-item user-edit" data-id="{{ $user->id }}"> Editar</button></li>
+
+                            {{-- Botão para redefinir senha automaticamente --}}
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li>
+                                <form action="{{ route('users.reset', $user->id) }}" method="post" style="display: inline;">
+                                    @csrf
+                                    <button type="submit" class="dropdown-item">Redefinir Senha</button>
+                                </form>
+                            </li>
+                        @endcan
+
                         @can('delete', $user)
                             <li>
                                 <hr class="dropdown-divider">
@@ -80,5 +95,14 @@
         var salesData = @json($salesData);
 
         createChart('salesChart', salesData, 'Vendas');
+
+        $(document).ready(function() {
+            $('.user-edit').click(function() {
+                $('#create_user').modal('show')
+                let user = @json($user);
+                editUser(user);
+                $('#createUsertLabel').text('Editar Usuário');
+            });
+        });
     </script>
 @endpush
