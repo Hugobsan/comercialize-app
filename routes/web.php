@@ -21,6 +21,9 @@ Route::get('/login', function () {
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 
 Route::middleware('auth')->group(function () {
+    Route::get('/home', function () {
+        return view('index');
+    })->name('index');
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::put('/update-item/{saleProduct}', [SaleController::class, 'updateItem'])->name('sales.update-item');
     Route::delete('/remove-item/{saleProduct}', [SaleController::class, 'removeItem'])->name('sales.remove-item');

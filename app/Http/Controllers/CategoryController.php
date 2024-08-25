@@ -14,7 +14,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        if(!auth()->user()->can('view', Category::class)) {
+        if(!auth()->user()->can('viewAny', Category::class)) {
             toastr()->error('Você não tem permissão para visualizar categorias');
             return redirect()->route('index');
         }

@@ -18,7 +18,7 @@ class SaleController extends Controller
      */
     public function index()
     {
-        if (!auth()->user()->can('view', Sale::class)) {
+        if (!auth()->user()->can('viewAny', Sale::class)) {
             toastr()->error('Você não tem permissão para acessar essa página');
             return redirect()->back();
         }
