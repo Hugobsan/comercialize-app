@@ -17,12 +17,17 @@
             <div class="row">
                 <div class="form-group col-12 col-md-6">
                     <label for="seller">Vendedor</label>
-                    <select class="form-control" id="seller" name="seller" required>
+                    <select class="form-control" id="seller" name="seller" required {{ auth()->user()->role === 'seller' ? 'disabled' : '' }}>
                         <option value="">Selecione um vendedor</option>
                         @foreach ($sellers as $seller)
-                            <option value="{{ $seller->id }}">{{ $seller->name }}</option>
+                            <option value="{{ $seller->id }}" {{ $seller->id === auth()->user()->id ? 'selected' : '' }}>{{ $seller->name }}</option>
                         @endforeach
                     </select>
+
+                    <!-- Campo oculto para garantir o envio do valor do select -->
+                    @if (auth()->user()->role === 'seller')
+                        <input type="hidden" name="seller" value="{{ old('seller', auth()->user()->id) }}">
+                    @endif
                     @error('seller')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
@@ -72,7 +77,7 @@
                                     {{-- Remover item --}}
                                     <a class="btn btn-danger" href="{{ route('cart.remove', ['product' => $cart_product['product']->id]) }}">
                                         <i class="fas fa-trash"></i>
-                                    </button>
+                                        </button>
                                     </a>
                                 </td>
                             </tr>

@@ -9,6 +9,10 @@ class CartController extends Controller
 {
     public function addToCart(Request $request, Product $product = null)
     {
+        if(auth()->user()->role === 'customer') {
+            toastr()->error('É necessário entrar em contato com um vendedor para realizar compras');
+            return back();
+        }
         //Adicionando o produto ao carrinho na sessão
         $cart = session('cart', []);
 

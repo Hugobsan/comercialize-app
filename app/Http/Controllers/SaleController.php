@@ -23,32 +23,42 @@ class SaleController extends Controller
             return redirect()->back();
         }
 
-        // Verifica se tem dados de pesquisa
+        $user = auth()->user();
         $search = request()->input('search');
 
-        if ($search) {
-            //Pesquisa por data, cliente, produto ou categoria de produto
-            $sales = Sale::where('created_at', 'like', '%' . $search . '%')
-                ->orWhereHas('customer', function ($query) use ($search) {
-                    $query->where('name', 'like', '%' . $search . '%');
-                })
-                ->orWhereHas('seller', function ($query) use ($search) {
-                    $query->where('name', 'like', '%' . $search . '%');
-                })
-                ->orWhereHas('products', function ($query) use ($search) {
-                    $query->where('name', 'like', '%' . $search . '%')
-                        ->orWhereHas('category', function ($query) use ($search) {
-                            $query->where('name', 'like', '%' . $search . '%');
-                        });
-                })
-                ->orderBy('created_at', 'desc')->paginate(10)->appends(['search' => $search]);
-        } else {
-            $sales = Sale::orderBy('created_at', 'desc')->paginate(10);
+        // Filtra as vendas com base no papel do usuário
+        $query = Sale::query();
+
+        if ($user->role === 'seller') {
+            $query->where('seller_id', $user->id);
+        } elseif ($user->role === 'customer') {
+            $query->where('customer_id', $user->id);
         }
 
-        // $sales = Sale::orderBy('created_at', 'desc')->paginate(10);
+        if ($search) {
+            // Pesquisa por data, cliente, produto ou categoria de produto
+            $query->where(function ($query) use ($search) {
+                $query->where('created_at', 'like', '%' . $search . '%')
+                    ->orWhereHas('customer', function ($query) use ($search) {
+                        $query->where('name', 'like', '%' . $search . '%');
+                    })
+                    ->orWhereHas('seller', function ($query) use ($search) {
+                        $query->where('name', 'like', '%' . $search . '%');
+                    })
+                    ->orWhereHas('products', function ($query) use ($search) {
+                        $query->where('name', 'like', '%' . $search . '%')
+                            ->orWhereHas('category', function ($query) use ($search) {
+                                $query->where('name', 'like', '%' . $search . '%');
+                            });
+                    });
+            });
+        }
+
+        $sales = $query->orderBy('created_at', 'desc')->paginate(10)->appends(['search' => $search]);
+
         return view('sales.index', compact('sales'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -86,7 +96,7 @@ class SaleController extends Controller
         if (count($cart) === 0) {
             toastr()->error('Carrinho vazio');
             return back();
-        }  
+        }
 
         //Calculando o total a partir do valor atual dos produtos no banco
         $total_amount = array_reduce($cart, function ($carry, $item) {
