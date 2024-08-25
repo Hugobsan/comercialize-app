@@ -40,7 +40,7 @@
                 </form>
             </div>
             @include('users.components.table', ['users' => $users])
-            
+
             <div class="paginator d-flex justify-content-center align-self-center">
                 {{ $users->links() }}
             </div>
@@ -51,5 +51,11 @@
 
 @push('scripts')
     <script>
+        @if ($errors->any())
+            console.log('entrou');
+            //Reabrir o modal de criação de usuário
+            let modal = new bootstrap.Modal(document.getElementById('create_user'));
+            modal.show();
+        @endif
     </script>
 @endpush

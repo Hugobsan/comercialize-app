@@ -14,7 +14,7 @@
                             <label for="name" class="form-label">Nome</label>
                             <input type="text" class="form-control" id="name" name="name" maxlength="255" required>
                             @error('name')
-                                <div class="invalid-feedback">{{ $message }}</div>
+                                <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
                         </div>
                     </div>
@@ -23,7 +23,7 @@
                             <label for="icon" class="form-label">Icone</label>
                             <input type="text" class="form-control" id="icon" name="icon">
                             @error('icon')
-                                <div class="invalid-feedback">{{ $message }}</div>
+                                <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
                         </div>
 
@@ -31,7 +31,7 @@
                             <label for="color" class="form-label">Cor</label>
                             <input type="color" class="form-control" id="color" name="color" value="#3333ff">
                             @error('color')
-                                <div class="invalid-feedback">{{ $message }}</div>
+                                <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
                         </div>
                     </div>

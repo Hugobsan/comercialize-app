@@ -12,10 +12,7 @@ class StoreUserRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        if (auth()->user()->can('create', User::class)) {
-            return true;
-        }
-        return false;
+        return auth()->user()->can('create', User::class);
     }
 
     /**

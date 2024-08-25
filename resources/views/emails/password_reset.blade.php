@@ -10,5 +10,5 @@ Ir para a Aplicação
 @endcomponent
 
 Atenciosamente,<br>
-Sua equipe
+Equipe da {{ config('app.name') }}
 @endcomponent

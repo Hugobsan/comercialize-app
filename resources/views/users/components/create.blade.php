@@ -14,7 +14,7 @@
                             <label for="name" class="form-label">Nome</label>
                             <input type="text" class="form-control" id="name" name="name" maxlength="255" required>
                             @error('name')
-                                <div class="invalid-feedback">{{ $message }}</div>
+                                <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
                         </div>
                     </div>
@@ -23,7 +23,7 @@
                             <label for="email" class="form-label">E-mail</label>
                             <input type="email" class="form-control" id="email" name="email" maxlength="255" required>
                             @error('email')
-                                <div class="invalid-feedback">{{ $message }}</div>
+                                <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
                         </div>
                         <div class="col-sm-12 col-md-6 mb-3">
@@ -35,7 +35,7 @@
                                 <option value="seller">Vendedor</option>
                             </select>
                             @error('role')
-                                <div class="invalid-feedback">{{ $message }}</div>
+                                <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
                         </div>
                     </div>
@@ -44,14 +44,14 @@
                             <label for="password" class="form-label">Senha</label>
                             <input type="password" class="form-control" id="password" name="password" required>
                             @error('password')
-                                <div class="invalid-feedback">{{ $message }}</div>
+                                <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
                         </div>
                         <div class="col-sm-12 col-md-6 mb-3">
                             <label for="password_confirmation" class="form-label">Confirmação de senha</label>
                             <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
                             @error('password_confirmation')
-                                <div class="invalid-feedback">{{ $message }}</div>
+                                <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
                         </div>
                     </div>

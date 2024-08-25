@@ -14,7 +14,7 @@
                             <label for="name" class="form-label">Nome</label>
                             <input type="text" class="form-control" id="name" name="name" maxlength="255" required>
                             @error('name')
-                                <div class="invalid-feedback">{{ $message }}</div>
+                                <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
                         </div>
                     </div>
@@ -23,14 +23,14 @@
                             <label for="photo" class="form-label">Foto</label>
                             <input type="file" class="form-control" id="photo" name="photo" required accept="image/*">
                             @error('photo')
-                                <div class="invalid-feedback">{{ $message }}</div>
+                                <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
                         </div>
                         <div class="col-sm-12 col-md-6 mb-3">
                             <label for="price" class="form-label">Preço (R$)</label>
                             <input type="number" class="form-control" id="price" name="price" step="0.01" min="0" required>
                             @error('price')
-                                <div class="invalid-feedback">{{ $message }}</div>
+                                <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
                         </div>
                         
@@ -45,14 +45,14 @@
                                 @endforeach
                             </select>
                             @error('category_id')
-                                <div class="invalid-feedback">{{ $message }}</div>
+                                <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
                         </div>
                         <div class="col-sm-12 col-md-6 mb-3">
                             <label for="quantity" class="form-label">Quantidade em Estoque</label>
                             <input type="number" class="form-control" id="quantity" name="quantity" min="0" required>
                             @error('quantity')
-                                <div class="invalid-feedback">{{ $message }}</div>
+                                <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
                         </div>
                     </div>
