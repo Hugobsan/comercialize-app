@@ -25,7 +25,7 @@ class HandleSaleCreate
         //Verifica se o estoque dos produtos da venda estão abaixo de 10
         $products = [];
         foreach ($event->sale->products as $product) {
-            if ($product->pivot->quantity < 10) {
+            if ($product->quantity < 10) {
                 $products[] = $product;
             }
         }
