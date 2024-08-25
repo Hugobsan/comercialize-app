@@ -100,23 +100,14 @@ class SaleController extends Controller
             return back();
         }
 
-        //Calculando o total a partir do valor atual dos produtos no banco
-        $total_amount = array_reduce($cart, function ($carry, $item) {
-            return $carry + (float) $item['product']->unformatted_price * $item['quantity'];
-        }, 0);
-
-        $total_quantity = array_reduce($cart, function ($carry, $item) {
-            return $carry + $item['quantity']; //
-        }, 0);
-
         try {
             DB::beginTransaction();
 
             $sale = Sale::create([
                 'seller_id' => $request->seller,
                 'customer_id' => $request->customer,
-                'total_amount' => $total_amount,
-                'total_quantity' => $total_quantity,
+                'total_amount' => 0,
+                'total_quantity' => 0,
             ]);
 
             foreach ($cart as $item) {
