@@ -119,8 +119,6 @@
                     $(this).prop('disabled', true);
                 }
             });
-
-
         });
     </script>
 @endpush

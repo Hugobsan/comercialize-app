@@ -43,6 +43,9 @@
     <!-- DataTables -->
     <script src="https://cdn.datatables.net/2.1.4/js/dataTables.min.js"></script>
 
+    <!-- Adicionando a biblioteca Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <script>
         $(document).ready(function() {
             // DataTable
@@ -62,6 +65,43 @@
                 $('.nav-sell-button').append('<span class="badge bg-danger">' + $('meta[name="cart-items"]').attr('content') + '</span>');
             }
         });
+    </script>
+
+    <script>
+        // Função para criar um gráfico genérico
+        function createChart(canvasId, data, label) {
+            var ctx = document.getElementById(canvasId).getContext('2d');
+            var chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data.map(function(entry) {
+                        return entry.month;
+                    }),
+                    datasets: [{
+                        label: label,
+                        data: data.map(function(entry) {
+                            return entry.total;
+                        }),
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return 'R$ ' + value.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            return chart;
+        }
     </script>
     @stack('scripts')
 

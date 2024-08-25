@@ -58,7 +58,24 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return view('users.show', compact('user'));
+        // Processando os dados de vendas
+        if ($user->role != 'admin') {
+            $salesData = $user->sales
+                ->sortBy('created_at')
+                ->groupBy(function ($sale) {
+                    return $sale->created_at->format('Y-m');
+                })
+                ->map(function ($sales, $month) {
+                    return [
+                        'month' => $month,
+                        'total' => $sales->sum('total_amount'),
+                    ];
+                })
+                ->values();
+        } else {
+            $salesData = [];
+        }
+        return view('users.show', compact('user', 'salesData'));
     }
 
     /**

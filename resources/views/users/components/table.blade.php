@@ -1,4 +1,4 @@
-<div class="table-responsive my-2">
+<div class="table-responsive my-2" style="min-height: 50vh">
     <table class="table table-striped table-hover">
         <thead>
             <tr>
