@@ -2,6 +2,8 @@
 
 O Comercialize é um projeto desenvolvido com Laravel 11, usando o banco de dados MySQL. O front-end utiliza o Laravel Blade e Framework Bootstrap 5. Ele possui funcionalidades de CRUD para vendas, produtos, categorias de produtos e usuários, abrangendo controle de estoque, relatórios e métricas de vendas.
 
+Veja a apresentação do projeto no [YouTube](https://www.youtube.com/playlist?list=PLV83gw528gLSfHjvdRwTRCxEqR4q3viOg).
+
 O projeto conta com 3 tipos de usuários: administrador, vendedor e cliente. 
 O administrador é responsável por gerenciar os produtos, categorias de produtos e usuários, além de visualizar relatórios e métricas de vendas. 
 O vendedor é responsável por realizar vendas e visualizar relatórios e as próprias métricas de venda. 
